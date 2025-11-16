@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - ERP Cost Calculator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="auth-container">
+        <!-- Partie Gauche - Illustration -->
+        <div class="auth-illustration">
+            <div class="illustration-scene">
+                <div class="desk"></div>
+                <div class="character"></div>
+                <div class="computer"></div>
+                <div class="clock"></div>
+                <div class="plant-desk"></div>
+                <div class="plant-floor"></div>
+            </div>
+        </div>
+
+        <!-- Partie Droite - Formulaire -->
+        <div class="auth-form-section">
+            <div class="form-card">
+                <!-- Header -->
+                <div class="form-header">
+                    <div class="logo">
+                        <div class="logo-icon">
+                            <i class="fas fa-flag"></i>
+                        </div>
+                        <span>ERP Calculator</span>
+                    </div>
+                    <h1 class="form-title">Create account</h1>
+                    <p class="form-subtitle">Start your ERP cost calculation journey</p>
+                </div>
+
+                <!-- Formulaire d'inscription -->
+                <form id="signup-form">
+                    <div class="form-group">
+                        <label for="nom_complet" class="form-label">
+                            <i class="fas fa-user"></i> Full Name
+                        </label>
+                        <input type="text" id="nom_complet" name="nom_complet" class="form-input" 
+                               placeholder="Enter your full name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email" class="form-label">
+                            <i class="fas fa-envelope"></i> Email Address
+                        </label>
+                        <input type="email" id="email" name="email" class="form-input" 
+                               placeholder="Enter your email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password" class="form-label">
+                            <i class="fas fa-lock"></i> Password
+                        </label>
+                        <div class="password-input-container">
+                            <input type="password" id="password" name="password" class="form-input" 
+                                   placeholder="Create a password" required minlength="8">
+                            <button type="button" class="password-toggle">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <div class="password-requirements">
+                            <small>Minimum 8 caractères, avec chiffres et lettres</small>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirm_password" class="form-label">
+                            <i class="fas fa-lock"></i> Confirm Password
+                        </label>
+                        <div class="password-input-container">
+                            <input type="password" id="confirm_password" name="confirm_password" class="form-input" 
+                                   placeholder="Confirm your password" required>
+                            <button type="button" class="password-toggle">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-user-plus"></i> Create Account
+                    </button>
+                </form>
+
+                <!-- Séparateur -->
+                <div class="separator">
+                    <span>or sign up with</span>
+                </div>
+
+                <!-- Boutons sociaux -->
+                <div class="social-buttons">
+                    <button type="button" class="social-btn google" onclick="signupWithGoogle()">
+                        <i class="fab fa-google"></i>
+                    </button>
+                    <button type="button" class="social-btn facebook" onclick="signupWithFacebook()">
+                        <i class="fab fa-facebook-f"></i>
+                    </button>
+                    <button type="button" class="social-btn linkedin" onclick="signupWithLinkedIn()">
+                        <i class="fab fa-linkedin-in"></i>
+                    </button>
+                </div>
+
+                <!-- Mentions légales -->
+                <div class="legal-links">
+                    <p class="legal-text">
+                        By signing up, you agree to our 
+                        <a href="#">Terms of Services</a> and 
+                        <a href="#">Privacy Policy</a>
+                    </p>
+                </div>
+
+                <!-- Lien de connexion -->
+                <div class="login-link">
+                    <p>Already have an account? <a href="{{ url_for('login_page') }}">Login</a></p>
+                </div>
+
+                <!-- Compte démo -->
+                <div class="demo-account-signup">
+                    <div class="separator">
+                        <span>demo account</span>
+                    </div>
+                    <div class="demo-info">
+                        <p><strong>Compte de démonstration :</strong></p>
+                        <p>Email: <code>demo@erp.ma</code></p>
+                        <p>Password: <code>demo123</code></p>
+                        <a href="{{ url_for('login_page') }}" class="btn-demo">
+                            <i class="fas fa-play-circle"></i> Try Demo
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loading" class="loading-overlay hidden">
+        <div class="loading-content">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Creating your account...</p>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
+    <script>
+        // Fonctions pour les connexions sociales (simulation)
+        function signupWithGoogle() {
+            showNotification('Google signup feature coming soon!', 'info');
+        }
+
+        function signupWithFacebook() {
+            showNotification('Facebook signup feature coming soon!', 'info');
+        }
+
+        function signupWithLinkedIn() {
+            showNotification('LinkedIn signup feature coming soon!', 'info');
+        }
+
+        // Initialisation spécifique à la page signup
+        document.addEventListener('DOMContentLoaded', function() {
+            const signupForm = document.getElementById('signup-form');
+            if (signupForm) {
+                signupForm.addEventListener('submit', handleSignup);
+                
+                // Validation en temps réel
+                const inputs = signupForm.querySelectorAll('input');
+                inputs.forEach(input => {
+                    input.addEventListener('blur', function() {
+                        validateField(this);
+                    });
+                    
+                    input.addEventListener('input', function() {
+                        clearFieldError(this);
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html>

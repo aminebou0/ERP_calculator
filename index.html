@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERP Cost Calculator - Calculateur des Coûts Cachés ERP</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <img src="{{ url_for('static', filename='logo.png') }}" alt="ERP Calculator Logo" class="logo">
+                <span class="brand-name">ERP Cost Calculator</span>
+            </div>
+            
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="{{ url_for('home') }}" class="nav-link active">
+                        <i class="fas fa-home"></i> Home
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url_for('products_page') }}" class="nav-link">
+                        <i class="fas fa-box"></i> Our Products
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url_for('about_page') }}" class="nav-link">
+                        <i class="fas fa-info-circle"></i> About Us
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url_for('contact_page') }}" class="nav-link">
+                        <i class="fas fa-envelope"></i> Contact Us
+                    </a>
+                </li>
+                <li class="nav-item auth-buttons" id="nav-auth-buttons">
+                    <a href="{{ url_for('login_page') }}" class="btn-login">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </a>
+                    <a href="{{ url_for('signup_page') }}" class="btn-signup">
+                        <i class="fas fa-user-plus"></i> Sign Up
+                    </a>
+                </li>
+            </ul>
+
+            <!-- Mobile menu button -->
+            <div class="nav-toggle" id="mobile-menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- User Info Bar (visible when logged in) -->
+    <div id="user-info-bar" class="user-info-bar hidden">
+        <div class="user-container">
+            <span id="user-greeting">Welcome, <strong id="user-name"></strong>!</span>
+            <button id="logout-btn" class="btn-logout">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Header Hero Section -->
+        <header class="header">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1>Calculateur des Coûts Cachés ERP</h1>
+                    <p class="subtitle">
+                        Outil d'analyse intelligent pour évaluer les coûts cachés lors de l'implémentation d'ERP 
+                        dans les entreprises marocaines. Optimisez votre investissement et évitez les surprises.
+                    </p>
+                    <div class="hero-features">
+                        <div class="feature">
+                            <i class="fas fa-chart-line"></i>
+                            <span>Analyse détaillée des coûts</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-industry"></i>
+                            <span>Adapté au contexte marocain</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-lightbulb"></i>
+                            <span>Recommandations personnalisées</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-illustration">
+                    <div class="illustration-container">
+                        <div class="illustration-item laptop">
+                            <i class="fas fa-laptop-code"></i>
+                        </div>
+                        <div class="illustration-item coffee">
+                            <i class="fas fa-coffee"></i>
+                        </div>
+                        <div class="illustration-item plant">
+                            <i class="fas fa-leaf"></i>
+                        </div>
+                        <div class="illustration-item chart">
+                            <i class="fas fa-chart-pie"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Authentication Required Message -->
+        <div id="auth-required" class="auth-required-message">
+            <div class="auth-message-content">
+                <i class="fas fa-lock"></i>
+                <h3>Accès Requis</h3>
+                <p>Veuillez vous connecter ou créer un compte pour utiliser le calculateur de coûts ERP.</p>
+                <div class="auth-actions">
+                    <a href="{{ url_for('login_page') }}" class="btn-primary">
+                        <i class="fas fa-sign-in-alt"></i> Se Connecter
+                    </a>
+                    <a href="{{ url_for('signup_page') }}" class="btn-secondary">
+                        <i class="fas fa-user-plus"></i> Créer un Compte
+                    </a>
+                </div>
+                <div class="demo-account">
+                    <p><strong>Compte de démonstration :</strong></p>
+                    <p>Email: <code>demo@erp.ma</code> | Mot de passe: <code>demo123</code></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Calculator Content (hidden until authenticated) -->
+        <div id="calculator-content" class="calculator-content hidden">
+            <!-- Navigation Tabs -->
+            <div class="tabs">
+                <button class="tab-button active" onclick="openTab('tab-calcul')">
+                    <i class="fas fa-calculator"></i> Calcul des Coûts
+                </button>
+                <button class="tab-button" onclick="openTab('tab-definitions')">
+                    <i class="fas fa-book"></i> Définitions
+                </button>
+                <button class="tab-button" onclick="openTab('tab-statistiques')">
+                    <i class="fas fa-chart-bar"></i> Statistiques
+                </button>
+                <button class="tab-button" onclick="openTab('tab-historique')">
+                    <i class="fas fa-history"></i> Historique
+                </button>
+            </div>
+
+            <!-- Main Content -->
+            <main class="main-content">
+                <!-- Tab 1: Calcul des Coûts -->
+                <div id="tab-calcul" class="tab-content active">
+                    <div class="form-section">
+                        <h2><i class="fas fa-building"></i> Informations de l'Entreprise</h2>
+                        
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="nom_entreprise">
+                                    <i class="fas fa-signature"></i> Nom de l'Entreprise *
+                                </label>
+                                <input type="text" id="nom_entreprise" name="nom_entreprise" required
+                                       placeholder="Entrez le nom de votre entreprise">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="secteur">
+                                    <i class="fas fa-industry"></i> Secteur d'Activité *
+                                </label>
+                                <select id="secteur" name="secteur" required>
+                                    <option value="">Sélectionnez un secteur</option>
+                                    <option value="Industrie">Industrie</option>
+                                    <option value="Services">Services</option>
+                                    <option value="Distribution">Distribution</option>
+                                    <option value="Textile">Textile</option>
+                                    <option value="Commerce">Commerce</option>
+                                    <option value="IT">Technologies de l'Information</option>
+                                    <option value="Autre">Autre</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="taille">
+                                    <i class="fas fa-users"></i> Taille de l'Entreprise *
+                                </label>
+                                <select id="taille" name="taille" required>
+                                    <option value="">Sélectionnez la taille</option>
+                                    <option value="PME">PME (1-50 employés)</option>
+                                    <option value="Moyenne">Moyenne (51-200 employés)</option>
+                                    <option value="Grande">Grande (201+ employés)</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="chiffre_affaires">
+                                    <i class="fas fa-money-bill-wave"></i> Chiffre d'Affaires Annuel (MAD) *
+                                </label>
+                                <input type="text" id="chiffre_affaires" name="chiffre_affaires" 
+                                       placeholder="10,000,000" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="nombre_employes">
+                                    <i class="fas fa-user-friends"></i> Nombre d'Employés *
+                                </label>
+                                <input type="number" id="nombre_employes" name="nombre_employes" 
+                                       min="1" placeholder="100" required>
+                            </div>
+                        </div>
+
+                        <div class="quick-actions">
+                            <button type="button" class="btn-secondary" onclick="chargerExemple('industrie')">
+                                <i class="fas fa-industry"></i> Exemple Industrie
+                            </button>
+                            <button type="button" class="btn-secondary" onclick="chargerExemple('services')">
+                                <i class="fas fa-concierge-bell"></i> Exemple Services
+                            </button>
+                            <button type="button" class="btn-secondary" onclick="chargerExemple('distribution')">
+                                <i class="fas fa-truck"></i> Exemple Distribution
+                            </button>
+                            <button type="button" class="btn-secondary" onclick="chargerExemple('textile')">
+                                <i class="fas fa-tshirt"></i> Exemple Textile
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Paramètres des Coûts -->
+                    <div class="parametres-section">
+                        <h2><i class="fas fa-sliders-h"></i> Paramètres des Coûts</h2>
+                        
+                        <div class="parametres-tabs">
+                            <button class="param-tab active" onclick="openParamTab('param-erreurs')">
+                                <i class="fas fa-exclamation-triangle"></i> Erreurs
+                            </button>
+                            <button class="param-tab" onclick="openParamTab('param-resistance')">
+                                <i class="fas fa-users"></i> Résistance
+                            </button>
+                            <button class="param-tab" onclick="openParamTab('param-imprevus')">
+                                <i class="fas fa-surprise"></i> Imprévus
+                            </button>
+                        </div>
+
+                        <!-- Paramètres Erreurs -->
+                        <div id="param-erreurs" class="param-content active">
+                            <div class="param-grid">
+                                <div class="param-group">
+                                    <label for="delai_prevue_mois">Délai prévu (mois)</label>
+                                    <input type="number" id="delai_prevue_mois" name="delai_prevue_mois" 
+                                           value="8" min="1" max="36">
+                                    <span class="help-text">Durée estimée initiale du projet</span>
+                                </div>
+                                
+                                <div class="param-group">
+                                    <label for="delai_reel_mois">Délai réel (mois)</label>
+                                    <input type="number" id="delai_reel_mois" name="delai_reel_mois" 
+                                           value="12" min="1" max="36">
+                                    <span class="help-text">Durée réelle de mise en œuvre</span>
+                                </div>
+                                
+                                <div class="param-group">
+                                    <label for="cout_jour_homme">Coût jour/homme (MAD)</label>
+                                    <input type="number" id="cout_jour_homme" name="cout_jour_homme" 
+                                           value="800" min="0">
+                                    <span class="help-text">Coût moyen par jour de travail</span>
+                                </div>
+                                
+                                <div class="param-group">
+                                    <label for="heures_correction">Heures de correction</label>
+                                    <input type="number" id="heures_correction" name="heures_correction" 
+                                           value="200" min="0">
+                                    <span class="help-text">Heures dédiées aux corrections techniques</span>
+                                </div>
+
+                                <div class="param-group">
+                                    <label for="heures_configuration">Heures configuration</label>
+                                    <input type="number" id="heures_configuration" name="heures_configuration" 
+                                           value="100" min="0">
+                                    <span class="help-text">Heures de développement spécifique</span>
+                                </div>
+
+                                <div class="param-group">
+                                    <label for="taux_horaire_developpeur">Taux horaire développeur (MAD)</label>
+                                    <input type="number" id="taux_horaire_developpeur" name="taux_horaire_developpeur" 
+                                           value="200" min="0">
+                                    <span class="help-text">Coût horaire pour les développements</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Paramètres Résistance -->
+                        <div id="param-resistance" class="param-content">
+                            <div class="param-grid">
+                                <div class="param-group">
+                                    <label for="taux_baisse_productivite">Baisse productivité (%)</label>
+                                    <input type="number" id="taux_baisse_productivite" name="taux_baisse_productivite" 
+                                           value="15" min="0" max="100">
+                                    <span class="help-text">Pourcentage de baisse de productivité moyenne</span>
+                                </div>
+                                
+                                <div class="param-group">
+                                    <label for="salaire_moyen_mensuel">Salaire moyen mensuel (MAD)</label>
+                                    <input type="number" id="salaire_moyen_mensuel" name="salaire_moyen_mensuel" 
+                                           value="8000" min="0">
+                                    <span class="help-text">Salaire mensuel moyen des employés</span>
+                                </div>
+                                
+                                <div class="param-group">
+                                    <label for="duree_adaptation_mois">Durée adaptation (mois)</label>
+                                    <input type="number" id="duree_adaptation_mois" name="duree_adaptation_mois" 
+                                           value="3" min="1" max="12">
+                                    <span class="help-text">Période d'adaptation au nouveau système</span>
+                                </div>
+                                
+                                <div class="param-group">
+                                    <label for="nombre_departs">Nombre de départs</label>
+                                    <input type="number" id="nombre_departs" name="nombre_departs" 
+                                           value="5" min="0">
+                                    <span class="help-text">Employés partis suite à l'implémentation</span>
+                                </div>
+
+                                <div class="param-group">
+                                    <label for="heures_support">Heures de support</label>
+                                    <input type="number" id="heures_support" name="heures_support" 
+                                           value="300" min="0">
+                                    <span class="help-text">Heures de support technique supplémentaire</span>
+                                </div>
+
+                                <div class="param-group">
+                                    <label for="taux_horaire_support">Taux horaire support (MAD)</label>
+                                    <input type="number" id="taux_horaire_support" name="taux_horaire_support" 
+                                           value="100" min="0">
+                                    <span class="help-text">Coût horaire pour le support technique</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Paramètres Imprévus -->
+                        <div id="param-imprevus" class="param-content">
+                            <div class="param-grid">
+                                <div class="param-group">
+                                    <label for="heures_retravail">Heures de retravail</label>
+                                    <input type="number" id="heures_retravail" name="heures_retravail" 
+                                           value="300" min="0">
+                                    <span class="help-text">Heures consacrées aux ajustements processus</span>
+                                </div>
+                                
+                                <div class="param-group">
+                                    <label for="heures_integration">Heures d'intégration</label>
+                                    <input type="number" id="heures_integration" name="heures_integration" 
+                                           value="400" min="0">
+                                    <span class="help-text">Heures pour intégration systèmes existants</span>
+                                </div>
+                                
+                                <div class="param-group">
+                                    <label for="cout_maintenance_annuel">Coût maintenance annuel (MAD)</label>
+                                    <input type="number" id="cout_maintenance_annuel" name="cout_maintenance_annuel" 
+                                           value="100000" min="0">
+                                    <span class="help-text">Coût annuel de maintenance prévu</span>
+                                </div>
+                                
+                                <div class="param-group">
+                                    <label for="taux_maintenance_imprevu">Maintenance imprévue (%)</label>
+                                    <input type="number" id="taux_maintenance_imprevu" name="taux_maintenance_imprevu" 
+                                           value="20" min="0" max="100">
+                                    <span class="help-text">Pourcentage de coûts maintenance supplémentaires</span>
+                                </div>
+
+                                <div class="param-group">
+                                    <label for="heures_adaptation">Heures adaptation réglementaire</label>
+                                    <input type="number" id="heures_adaptation" name="heures_adaptation" 
+                                           value="200" min="0">
+                                    <span class="help-text">Heures pour adaptations réglementaires</span>
+                                </div>
+
+                                <div class="param-group">
+                                    <label for="taux_horaire_expert">Taux horaire expert (MAD)</label>
+                                    <input type="number" id="taux_horaire_expert" name="taux_horaire_expert" 
+                                           value="250" min="0">
+                                    <span class="help-text">Coût horaire pour les experts métier</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="actions-section">
+                        <button type="button" class="btn-primary" onclick="calculerCouts()">
+                            <i class="fas fa-calculator"></i> Calculer les Coûts Cachés
+                        </button>
+                        <button type="button" class="btn-secondary" onclick="reinitialiserFormulaire()">
+                            <i class="fas fa-redo"></i> Réinitialiser
+                        </button>
+                    </div>
+
+                    <!-- Résultats -->
+                    <div id="resultats-section" class="resultats-section hidden">
+                        <h2><i class="fas fa-chart-pie"></i> Résultats du Calcul</h2>
+                        
+                        <div class="resultats-resume">
+                            <div class="resume-card total">
+                                <h3>Coût Total Caché</h3>
+                                <div class="montant" id="total-general">0 MAD</div>
+                                <div class="pourcentage" id="pourcentage-ca">0% du CA</div>
+                            </div>
+                            
+                            <div class="resume-card erreurs">
+                                <h3>Coûts Erreurs</h3>
+                                <div class="montant" id="total-erreurs">0 MAD</div>
+                            </div>
+                            
+                            <div class="resume-card resistance">
+                                <h3>Coûts Résistance</h3>
+                                <div class="montant" id="total-resistance">0 MAD</div>
+                            </div>
+                            
+                            <div class="resume-card imprevus">
+                                <h3>Coûts Imprévus</h3>
+                                <div class="montant" id="total-imprevus">0 MAD</div>
+                            </div>
+                        </div>
+
+                        <!-- Détails des Coûts -->
+                        <div class="details-section">
+                            <div class="details-grid">
+                                <!-- Détails Erreurs -->
+                                <div class="details-category">
+                                    <h4><i class="fas fa-exclamation-triangle"></i> Détails des Coûts - Erreurs</h4>
+                                    <div id="details-erreurs" class="details-list"></div>
+                                </div>
+                                
+                                <!-- Détails Résistance -->
+                                <div class="details-category">
+                                    <h4><i class="fas fa-users"></i> Détails des Coûts - Résistance</h4>
+                                    <div id="details-resistance" class="details-list"></div>
+                                </div>
+                                
+                                <!-- Détails Imprévus -->
+                                <div class="details-category">
+                                    <h4><i class="fas fa-surprise"></i> Détails des Coûts - Imprévus</h4>
+                                    <div id="details-imprevus" class="details-list"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Recommandations -->
+                        <div class="recommandations-section">
+                            <h4><i class="fas fa-lightbulb"></i> Recommandations Personnalisées</h4>
+                            <div id="recommandations-list" class="recommandations-list"></div>
+                        </div>
+
+                        <!-- Actions Résultats -->
+                        <div class="resultats-actions">
+                            <button type="button" class="btn-secondary" onclick="genererRapport()">
+                                <i class="fas fa-file-pdf"></i> Générer Rapport PDF
+                            </button>
+                            <button type="button" class="btn-secondary" onclick="afficherComparaisonSecteur()">
+                                <i class="fas fa-chart-line"></i> Comparer avec le Secteur
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab 2: Définitions -->
+                <div id="tab-definitions" class="tab-content">
+                    <h2><i class="fas fa-book"></i> Définitions des Coûts Cachés</h2>
+                    
+                    <div class="definitions-container">
+                        <div class="definition-category">
+                            <h3><i class="fas fa-exclamation-triangle"></i> Coûts liés aux Erreurs</h3>
+                            <div id="definitions-erreurs" class="definitions-list">
+                                <div class="loading-definitions">
+                                    <i class="fas fa-spinner fa-spin"></i>
+                                    <p>Chargement des définitions...</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="definition-category">
+                            <h3><i class="fas fa-users"></i> Coûts liés à la Résistance au Changement</h3>
+                            <div id="definitions-resistance" class="definitions-list">
+                                <div class="loading-definitions">
+                                    <i class="fas fa-spinner fa-spin"></i>
+                                    <p>Chargement des définitions...</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="definition-category">
+                            <h3><i class="fas fa-surprise"></i> Coûts liés aux Imprévus</h3>
+                            <div id="definitions-imprevus" class="definitions-list">
+                                <div class="loading-definitions">
+                                    <i class="fas fa-spinner fa-spin"></i>
+                                    <p>Chargement des définitions...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab 3: Statistiques -->
+                <div id="tab-statistiques" class="tab-content">
+                    <h2><i class="fas fa-chart-bar"></i> Statistiques par Secteur</h2>
+                    
+                    <div class="statistiques-controls">
+                        <select id="secteur-statistiques" onchange="chargerStatistiquesSecteur()">
+                            <option value="Tous">Tous les secteurs</option>
+                            <option value="Industrie">Industrie</option>
+                            <option value="Services">Services</option>
+                            <option value="Distribution">Distribution</option>
+                            <option value="Textile">Textile</option>
+                        </select>
+                    </div>
+                    
+                    <div id="statistiques-content" class="statistiques-content">
+                        <div class="loading-statistiques">
+                            <i class="fas fa-spinner fa-spin"></i>
+                            <p>Chargement des statistiques...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab 4: Historique -->
+                <div id="tab-historique" class="tab-content">
+                    <h2><i class="fas fa-history"></i> Historique des Calculs</h2>
+                    
+                    <div id="historique-content" class="historique-content">
+                        <div class="loading-historique">
+                            <i class="fas fa-spinner fa-spin"></i>
+                            <p>Chargement de l'historique...</p>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+        <!-- End Calculator Content -->
+
+        <!-- Features Section -->
+        <section class="features-section">
+            <div class="features-container">
+                <h2>Pourquoi utiliser notre calculateur ?</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3>Prévention des Risques</h3>
+                        <p>Identifiez et anticipez les coûts cachés avant qu'ils n'affectent votre budget.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3>Analyse Détaillée</h3>
+                        <p>Obtenez une breakdown complète des coûts par catégorie avec visualisations.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-cogs"></i>
+                        </div>
+                        <h3>Contexte Marocain</h3>
+                        <p>Calculs adaptés aux spécificités du marché et réglementation marocaine.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-rocket"></i>
+                        </div>
+                        <h3>Décision Éclairée</h3>
+                        <p>Prenez des décisions stratégiques basées sur des données précises.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>ERP Cost Calculator</h3>
+                <p>Outil intelligent pour l'analyse des coûts cachés d'implémentation ERP dans le contexte marocain.</p>
+                <div class="social-links">
+                    <a href="#" class="social-link"><i class="fab fa-facebook"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h4>Navigation</h4>
+                <ul>
+                    <li><a href="{{ url_for('home') }}">Home</a></li>
+                    <li><a href="{{ url_for('products_page') }}">Our Products</a></li>
+                    <li><a href="{{ url_for('about_page') }}">About Us</a></li>
+                    <li><a href="{{ url_for('contact_page') }}">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Resources</h4>
+                <ul>
+                    <li><a href="#">Documentation</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Case Studies</a></li>
+                    <li><a href="#">Support</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Contact</h4>
+                <ul>
+                    <li><i class="fas fa-envelope"></i> contact@erpcalculator.ma</li>
+                    <li><i class="fas fa-phone"></i> +212 648776480</li>
+                    <li><i class="fas fa-map-marker-alt"></i> bd Jakarta ,Oujda, Maroc</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 ERP Cost Calculator. Tous droits réservés. | Projet Académique - Module Progiciel de Gestion Intégré</p>
+            <p>Encadré par Pr. TOUBTOU Abderrahman</p>
+        </div>
+    </footer>
+
+    <!-- Loading Overlay -->
+    <div id="loading" class="loading-overlay hidden">
+        <div class="loading-content">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p id="loading-message">Chargement en cours...</p>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
+</body>
+</html>

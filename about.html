@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>À Propos - ERP Cost Calculator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <img src="{{ url_for('static', filename='logo.png') }}" alt="ERP Calculator Logo" class="logo">
+                <span class="brand-name">ERP Cost Calculator</span>
+            </div>
+            
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="{{ url_for('home') }}" class="nav-link">
+                        <i class="fas fa-home"></i> Accueil
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url_for('products_page') }}" class="nav-link">
+                        <i class="fas fa-box"></i> Nos Produits
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url_for('about_page') }}" class="nav-link active">
+                        <i class="fas fa-info-circle"></i> À Propos
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url_for('contact_page') }}" class="nav-link">
+                        <i class="fas fa-envelope"></i> Contact
+                    </a>
+                </li>
+                <li class="nav-item auth-buttons">
+                    <a href="{{ url_for('login_page') }}" class="btn-login">
+                        <i class="fas fa-sign-in-alt"></i> Connexion
+                    </a>
+                    <a href="{{ url_for('signup_page') }}" class="btn-signup">
+                        <i class="fas fa-user-plus"></i> Inscription
+                    </a>
+                </li>
+            </ul>
+
+            <div class="nav-toggle" id="mobile-menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Page Header -->
+        <header class="page-header">
+            <h1 class="page-title">À Propos de Nous</h1>
+            <p class="subtitle">Transformer l'implémentation des ERP grâce à une analyse des coûts basée sur les données</p>
+        </header>
+
+        <!-- Mission Section -->
+        <div class="page-content">
+            <div class="about-section">
+                <div class="about-content">
+                    <h2>Notre Mission</h2>
+                    <p>
+                        ERP Cost Calculator est né d'une observation simple : trop de projets d'implémentation ERP 
+                        échouent en raison de coûts imprévus et d'une mauvaise planification. Notre mission est de 
+                        donner aux entreprises les outils et les informations nécessaires pour prendre des décisions 
+                        éclairées concernant leurs investissements ERP.
+                    </p>
+                    
+                    <p>
+                        Nous croyons que chaque entreprise, quelle que soit sa taille, devrait avoir accès à des outils 
+                        d'analyse des coûts de niveau professionnel. C'est pourquoi nous avons développé une plateforme 
+                        complète qui combine l'expertise du secteur avec une technologie de pointe pour fournir des 
+                        informations précises et exploitables.
+                    </p>
+                </div>
+                
+                <div class="about-stats">
+                    <div class="stat">
+                        <div class="stat-number">500+</div>
+                        <div class="stat-label">Calculs Effectués</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">95%</div>
+                        <div class="stat-label">Taux de Précision</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">50+</div>
+                        <div class="stat-label">Entreprises Servies</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team Section -->
+            <div class="team-section">
+                <h2>Notre Équipe</h2>
+                <div class="team-grid">
+                    <div class="team-member">
+                        <div class="member-avatar">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                        <h3>BOUBOU Mohammed Amine</h3>
+                        <p class="member-role">Chef de Projet & Développeur Full Stack</p>
+                        <p class="member-bio">Étudiant en Master d'Excellence en Management des Systèmes d'Information Intelligent, passionné par le développement web et les systèmes ERP.</p>
+                    </div>
+                    
+                    <div class="team-member">
+                        <div class="member-avatar">
+                            <i class="fas fa-user-graduate"></i>
+                        </div>
+                        <h3>EL-BAKKALI Aya</h3>
+                        <p class="member-role">Designer UI/UX & Développeuse Frontend</p>
+                        <p class="member-bio">Étudiante en Master de Management des Systèmes d'Information, passionnée par la conception d'interfaces intuitives et l'amélioration de l'expérience utilisateur.</p>
+                    </div>
+                    
+                    <div class="team-member">
+                        <div class="member-avatar">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3>AMHAJJAR Hiba</h3>
+                        <p class="member-role">Analyste de Données & Business Intelligence</p>
+                        <p class="member-bio">Étudiante en Master d'Excellence en Management des Systèmes d'Information Intelligent, spécialisée en analyse de données et transformation des données en informations stratégiques.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Academic Context -->
+            <div class="academic-section">
+                <h2>Projet Académique</h2>
+                <div class="academic-info">
+                    <div class="academic-card">
+                        <h3><i class="fas fa-graduation-cap"></i> Master d'Excellence</h3>
+                        <p><strong>Module :</strong> Progiciel de Gestion Intégré (ERP)</p>
+                        <p><strong>Thématique :</strong> "Les coûts cachés d'un ERP : erreurs, résistance au changement et imprévus"</p>
+                        <p><strong>Encadré par :</strong> Pr. TOUBTOU Abderrahman</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Values Section -->
+            <div class="values-section">
+                <h2>Nos Valeurs</h2>
+                <div class="values-grid">
+                    <div class="value-card">
+                        <div class="value-icon">
+                            <i class="fas fa-bullseye"></i>
+                        </div>
+                        <h3>Précision</h3>
+                        <p>Nous privilégions des calculs précis et des données fiables pour garantir que nos utilisateurs prennent des décisions éclairées.</p>
+                    </div>
+                    
+                    <div class="value-card">
+                        <div class="value-icon">
+                            <i class="fas fa-lightbulb"></i>
+                        </div>
+                        <h3>Innovation</h3>
+                        <p>Nous améliorons continuellement nos algorithmes et fonctionnalités pour rester à la pointe des tendances du secteur.</p>
+                    </div>
+                    
+                    <div class="value-card">
+                        <div class="value-icon">
+                            <i class="fas fa-handshake"></i>
+                        </div>
+                        <h3>Transparence</h3>
+                        <p>Nous croyons en des résultats clairs et compréhensibles et en une communication honnête avec nos utilisateurs.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>ERP Cost Calculator</h3>
+                <p>Transformer l'implémentation des ERP grâce à des informations basées sur les données.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Liens Rapides</h4>
+                <ul>
+                    <li><a href="{{ url_for('home') }}">Accueil</a></li>
+                    <li><a href="{{ url_for('products_page') }}">Produits</a></li>
+                    <li><a href="{{ url_for('about_page') }}">À Propos</a></li>
+                    <li><a href="{{ url_for('contact_page') }}">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Connexion</h4>
+                <ul>
+                    <li><a href="#"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+                    <li><a href="#"><i class="fab fa-twitter"></i> Twitter</a></li>
+                    <li><a href="#"><i class="fab fa-github"></i> GitHub</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 ERP Cost Calculator. Projet Académique - Master d'Excellence</p>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
+</body>
+</html>

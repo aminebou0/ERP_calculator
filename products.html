@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nos Produits - ERP Cost Calculator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <img src="{{ url_for('static', filename='logo.png') }}" alt="ERP Calculator Logo" class="logo">
+                <span class="brand-name">ERP Cost Calculator</span>
+            </div>
+            
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="{{ url_for('home') }}" class="nav-link">
+                        <i class="fas fa-home"></i> Accueil
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url_for('products_page') }}" class="nav-link active">
+                        <i class="fas fa-box"></i> Nos Produits
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url_for('about_page') }}" class="nav-link">
+                        <i class="fas fa-info-circle"></i> À Propos
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url_for('contact_page') }}" class="nav-link">
+                        <i class="fas fa-envelope"></i> Contact
+                    </a>
+                </li>
+                <li class="nav-item auth-buttons">
+                    <a href="{{ url_for('login_page') }}" class="btn-login">
+                        <i class="fas fa-sign-in-alt"></i> Connexion
+                    </a>
+                    <a href="{{ url_for('signup_page') }}" class="btn-signup">
+                        <i class="fas fa-user-plus"></i> Inscription
+                    </a>
+                </li>
+            </ul>
+
+            <div class="nav-toggle" id="mobile-menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Page Header -->
+        <header class="page-header">
+            <h1 class="page-title">Nos Produits</h1>
+            <p class="subtitle">Découvrez notre suite complète de solutions de gestion des coûts ERP</p>
+        </header>
+
+        <!-- Products Grid -->
+        <div class="page-content">
+            <div class="products-grid">
+                <div class="product-card">
+                    <div class="product-icon">
+                        <i class="fas fa-calculator"></i>
+                    </div>
+                    <h3>Calculateur de Coûts ERP</h3>
+                    <p>Outil avancé pour calculer les coûts cachés de l'implémentation ERP avec analyse détaillée et recommandations.</p>
+                    <ul class="product-features">
+                        <li><i class="fas fa-check"></i> Calcul des coûts en temps réel</li>
+                        <li><i class="fas fa-check"></i> Analyse spécifique au secteur</li>
+                        <li><i class="fas fa-check"></i> Recommandations personnalisées</li>
+                        <li><i class="fas fa-check"></i> Rapports détaillés</li>
+                    </ul>
+                    <div class="product-price">
+                        <span class="price-free">Gratuit</span>
+                    </div>
+                    <a href="{{ url_for('signup_page') }}" class="btn-primary">Commencer</a>
+                </div>
+
+                <div class="product-card featured">
+                    <div class="product-badge">Le Plus Populaire</div>
+                    <div class="product-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Tableau de Bord Analytique</h3>
+                    <p>Tableau de bord complet pour suivre les métriques et indicateurs de performance de l'implémentation ERP.</p>
+                    <ul class="product-features">
+                        <li><i class="fas fa-check"></i> Surveillance en temps réel</li>
+                        <li><i class="fas fa-check"></i> Rapports personnalisés</li>
+                        <li><i class="fas fa-check"></i> Analyses de performance</li>
+                        <li><i class="fas fa-check"></i> Capacités d'exportation</li>
+                    </ul>
+                    <div class="product-price">
+                        <span class="price">49€</span>
+                        <span class="price-period">/mois</span>
+                    </div>
+                    <a href="{{ url_for('signup_page') }}" class="btn-primary">Essai Gratuit</a>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-icon">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <h3>Suite d'Implémentation</h3>
+                    <p>Boîte à outils complète pour gérer les projets d'implémentation ERP de la planification au déploiement.</p>
+                    <ul class="product-features">
+                        <li><i class="fas fa-check"></i> Planification de projet</li>
+                        <li><i class="fas fa-check"></i> Évaluation des risques</li>
+                        <li><i class="fas fa-check"></i> Suivi de progression</li>
+                        <li><i class="fas fa-check"></i> Collaboration d'équipe</li>
+                    </ul>
+                    <div class="product-price">
+                        <span class="price">99€</span>
+                        <span class="price-period">/mois</span>
+                    </div>
+                    <a href="{{ url_for('signup_page') }}" class="btn-primary">En Savoir Plus</a>
+                </div>
+            </div>
+
+            <!-- Features Comparison -->
+            <div class="features-comparison">
+                <h2>Comparer les Fonctionnalités</h2>
+                <div class="comparison-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Fonctionnalité</th>
+                                <th>Basique</th>
+                                <th>Professionnel</th>
+                                <th>Entreprise</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Calculs des Coûts</td>
+                                <td><i class="fas fa-check"></i></td>
+                                <td><i class="fas fa-check"></i></td>
+                                <td><i class="fas fa-check"></i></td>
+                            </tr>
+                            <tr>
+                                <td>Analyses Avancées</td>
+                                <td><i class="fas fa-times"></i></td>
+                                <td><i class="fas fa-check"></i></td>
+                                <td><i class="fas fa-check"></i></td>
+                            </tr>
+                            <tr>
+                                <td>Rapports Personnalisés</td>
+                                <td><i class="fas fa-times"></i></td>
+                                <td><i class="fas fa-check"></i></td>
+                                <td><i class="fas fa-check"></i></td>
+                            </tr>
+                            <tr>
+                                <td>Accès API</td>
+                                <td><i class="fas fa-times"></i></td>
+                                <td><i class="fas fa-times"></i></td>
+                                <td><i class="fas fa-check"></i></td>
+                            </tr>
+                            <tr>
+                                <td>Support Prioritaire</td>
+                                <td><i class="fas fa-times"></i></td>
+                                <td><i class="fas fa-times"></i></td>
+                                <td><i class="fas fa-check"></i></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>ERP Cost Calculator</h3>
+                <p>Outils avancés pour la gestion des coûts ERP et l'analyse d'implémentation.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Produits</h4>
+                <ul>
+                    <li><a href="#">Calculateur de Coûts</a></li>
+                    <li><a href="#">Tableau de Bord Analytique</a></li>
+                    <li><a href="#">Suite d'Implémentation</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Entreprise</h4>
+                <ul>
+                    <li><a href="{{ url_for('about_page') }}">À Propos</a></li>
+                    <li><a href="{{ url_for('contact_page') }}">Contact</a></li>
+                    <li><a href="#">Carrières</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 ERP Cost Calculator. Projet Académique - Master d'Excellence</p>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
+</body>
+</html>
